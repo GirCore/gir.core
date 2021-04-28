@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Generator.Properties;
 using Generator.Services.Writer;
 using Repository;
-using Repository.Analysis;
 using Repository.Model;
+using Repository.Analysis;
 using Scriban.Runtime;
 
 namespace Generator.Factories
@@ -48,8 +47,8 @@ namespace Generator.Factories
             scriptObject.Import(symbol);
             //TODO: Workaround as long as scriban indexer are broken see https://github.com/scriban/scriban/issues/333
             scriptObject.Import("get_metadata", new Func<string, object?>(key => symbol.Metadata[key]));
-            scriptObject.Import("write_managed_property_descriptor", new Func<Property, string>(p => PropertyGenerator.WriteDescriptor(p, symbol, currentNamespace)));
-            scriptObject.Import("write_managed_property", new Func<Property, string>(p => PropertyGenerator.WriteProperty(p, currentNamespace)));
+            scriptObject.Import("write_managed_property_descriptor", new Func<Property, string>(p => new Properties.Descriptor(p, symbol, currentNamespace).Write()));
+            scriptObject.Import("write_managed_property", new Func<Property, string>(p => new Properties.Definition(p, currentNamespace).Write()));
             return scriptObject;
         }
     }

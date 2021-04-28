@@ -4,12 +4,12 @@ using String = Repository.Model.String;
 
 namespace Generator.Properties
 {
-    public static class PropertyExtension
+    internal static class PropertyExtension
     {
-        public static string GetDescriptorName(this Property property)
+        internal static string GetDescriptorName(this Property property)
             => property.SymbolName + "PropertyDefinition";
-
-        public static string GetTypeName(this Property property, Namespace currentNamespace)
+        
+        internal static string GetTypeName(this Property property, Namespace currentNamespace)
         {
             var type = property.WriteType(Target.Managed, currentNamespace);
 

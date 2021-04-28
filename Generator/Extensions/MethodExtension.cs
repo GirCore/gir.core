@@ -30,7 +30,7 @@ namespace Generator
             if (method is null)
                 return string.Empty;
 
-            var generator = new MethodGenerator(method, parent_type_name, currentNamespace);
+            var generator = new Methods.Instance(method, parent_type_name, currentNamespace);
 
             return generator.Generate();
         }

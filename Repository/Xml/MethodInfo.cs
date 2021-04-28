@@ -2,22 +2,25 @@ using System.Xml.Serialization;
 
 namespace Repository.Xml
 {
-    public class MethodInfo
+    public class MethodInfo : CallableAttributes
     {
-        [XmlAttribute("name")]
+        [XmlAttribute(CallableAttributes.NameAttribute)]
         public string? Name { get; set; }
 
-        [XmlAttribute("identifier", Namespace = "http://www.gtk.org/introspection/c/1.0")]
+        [XmlAttribute(CallableAttributes.IdentifierAttribute, Namespace = CallableAttributes.IdentifierNamespace)]
         public string? Identifier { get; set; }
 
-        [XmlAttribute("throws")]
+        [XmlAttribute(CallableAttributes.ThrowsAttribute)]
         public bool Throws { get; set; }
 
-        [XmlAttribute("deprecated")]
+        [XmlAttribute(InfoAttributes.DeprecatedAttribute)]
         public bool Deprecated { get; set; }
 
-        [XmlAttribute("deprecated-version")]
+        [XmlAttribute(InfoAttributes.DeprecatedVersionAttribute)]
         public string? DeprecatedVersion { get; set; }
+
+        [XmlAttribute(InfoAttributes.IntrospectableAttribute)]
+        public bool Introspectable { get; set; }
 
         [XmlElement("return-value")]
         public ReturnValueInfo? ReturnValue { get; set; }
@@ -31,7 +34,7 @@ namespace Repository.Xml
         [XmlElement("parameters")]
         public ParametersInfo? Parameters { get; set; }
 
-        [XmlAttribute("moved-to")]
+        [XmlAttribute(CallableAttributes.MovedToAttribute)]
         public string? MovedTo { get; set; }
 
         public override string? ToString()

@@ -5,9 +5,9 @@ using System.Text;
 using Repository;
 using Repository.Model;
 
-namespace Generator
+namespace Generator.Methods
 {
-    internal partial class MethodGenerator
+    internal class Instance : Base
     {
         private readonly Method _method;
         private readonly Namespace _currentNamespace;
@@ -28,7 +28,7 @@ namespace Generator
         // resources are not accidentally deleted while in-use.
         private readonly BlockStack _stack = new();
 
-        public MethodGenerator(Method method, SymbolName parent_name, Namespace currentNamespace)
+        public Instance(Method method, SymbolName parent_name, Namespace currentNamespace)
         {
             _method = method;
             _parent = parent_name;
@@ -42,7 +42,7 @@ namespace Generator
             _instanceParameter = method.ParameterList.InstanceParameter;
         }
 
-        public string Generate()
+        public override string Generate()
         {
             if (!CanGenerateMethod())
                 return string.Empty;   
@@ -99,7 +99,7 @@ namespace Generator
             if (_method.ReturnValue.SymbolReference.GetSymbol().GetType() == typeof(Union))
                 return false;
             
-            // No GObject array parameters
+            // No GObject array parametersthrow new System.NotImplementedException();
             if (_managedParams.Any(param => 
                 param.SymbolReference.GetSymbol().GetType() == typeof(Class) && 
                 param.TypeInformation.Array != null))
