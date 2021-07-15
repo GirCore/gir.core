@@ -97,6 +97,9 @@ namespace GObject.Native
             if (_reverseTypeDict.TryGetValue(gtype, out System.Type? sysType))
                 return sysType;
 
+            if (Functions.TypeIsA(gtype.Value, Type.Boxed.Value))
+                throw new Exception($"Record not registered: {gtype.ToString()}");
+
             // If gtype is not in the type dictionary, walk up the
             // tree until we find a type that is. As all objects are
             // descended from GObject, we will eventually find a parent

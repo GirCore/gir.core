@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>Gir.xlib</PackageId>
+    <RootNamespace>xlib</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GLib-2.0\GLib-2.0.csproj" />
+    <ProjectReference Include="..\GObject-2.0\GObject-2.0.csproj" />
+  </ItemGroup>
+</Project>

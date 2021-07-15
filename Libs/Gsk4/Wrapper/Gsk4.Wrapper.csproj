@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\..\Pango\Wrapper\Pango.Wrapper.csproj" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <PackageId>Gir.Wrapper.CS.Gsk4</PackageId>
-  </PropertyGroup>
-</Project>

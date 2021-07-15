@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\GObject-2.0\GObject-2.0.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>Gir.GModule</PackageId>
+    <RootNamespace>GModule</RootNamespace>
+  </PropertyGroup>
+</Project>

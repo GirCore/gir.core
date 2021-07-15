@@ -28,9 +28,14 @@ namespace Generator
             return namespaceName + "." + name;
         }
 
-        public static string WriteTypeRegistration(this Type type)
+        public static string WriteTypeRegistrationClass(this Type type)
         {
             return $"TypeDictionary.Add(typeof({type.SymbolName}), new GObject.Type(Native.{type.SymbolName}.Instance.Methods.GetGType()));\r\n";
+        }
+        
+        public static string WriteTypeRegistrationBoxed(this Type type)
+        {
+            return $"TypeDictionary.Add(typeof({type.SymbolName}), new GObject.Type(Native.{type.SymbolName}.Methods.GetGType()));\r\n";
         }
     }
 }

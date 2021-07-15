@@ -36,7 +36,7 @@ namespace Generator
 
             foreach (Field field in fields)
             {
-                builder.AppendLine("//[FieldOffset(0)] TODO Enable offset");
+                builder.AppendLine("[FieldOffset(0)]");
                 builder.AppendLine(field.WriteNative(currentNamespace));
             }
 

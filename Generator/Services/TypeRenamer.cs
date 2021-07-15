@@ -96,8 +96,9 @@ namespace Generator.Services
         {
             union.Metadata["Name"] = union.SymbolName;
             union.Metadata["StructName"] = "Struct";
+            union.Metadata["StructRefName"] = $"{union.SymbolName}.Struct";
 
-            union.SymbolName = new SymbolName($"{union.SymbolName}.Struct");
+            union.SymbolName = new SymbolName($"{union.SymbolName}");
         }
 
         private void SetRecordMetadata(IEnumerable<Record> records)
@@ -121,6 +122,7 @@ namespace Generator.Services
             record.Metadata["StructRefName"] = $"{className}.Class";
             record.Metadata["SafeHandleName"] = "Handle";
             record.Metadata["SafeHandleRefName"] = $"{className}.Handle";
+            record.Metadata["SafeHandleRefManagedFunc"] = $"{className}.ManagedHandle.Create";
 
             record.SymbolName = new SymbolName($"{className}.Class");
         }
@@ -132,6 +134,7 @@ namespace Generator.Services
             record.Metadata["StructRefName"] = $"{record.SymbolName}.Struct";
             record.Metadata["SafeHandleName"] = "Handle";
             record.Metadata["SafeHandleRefName"] = $"{record.SymbolName}.Handle";
+            record.Metadata["SafeHandleRefManagedFunc"] = $"{record.SymbolName}.ManagedHandle.Create";
 
             record.SymbolName = new SymbolName($"{record.SymbolName}");
         }

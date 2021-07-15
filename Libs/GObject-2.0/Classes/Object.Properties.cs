@@ -55,7 +55,7 @@ namespace GObject
             var handle = Native.Value.ManagedHandle.Create();
             Native.Object.Instance.Methods.GetProperty(Handle, name, handle);
 
-            return new Value(handle);
+            return Value.__FactoryNew(handle);
         }
 
         /// <summary>

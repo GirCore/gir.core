@@ -21,11 +21,17 @@ namespace {{ namespace.name }}
         // Override this to perform additional steps in the constructor
         partial void Initialize();
         
-        public {{ $record_name }}({{ $safe_handle }} handle)
+        private {{ $record_name }}({{ $safe_handle }} handle)
         {
             _handle = handle;
             Initialize();
         }
+        
+        public static {{ $record_name }} __FactoryNew({{ $safe_handle }} handle)
+            => new {{ $record_name }}(handle);
+            
+        public static {{ $record_name }} __FactoryNew(IntPtr ptr)
+            => new {{ $record_name }}(new {{ $safe_handle }}(ptr));
         
         // TODO: Default Constructor (allocate in managed memory and free on Dispose?)
         // We need to be able to create instances of records with full access to

@@ -1,5 +1,4 @@
 ﻿using Gtk;
-using Global = Gtk.Global;
 
 namespace GtkDemo
 {
@@ -22,10 +21,10 @@ namespace GtkDemo
         // Entry Point
         public static void Main(string[] args)
         {
-            // We need to call Gtk.Global.Init() before using
+            // We need to call Gtk.Functions.Init() before using
             // any Gtk widgets or functions. If you use Gtk.Application,
             // this is done for you.
-            Global.Init();
+            Functions.Init();
 
             // Gir.Core supports Object Initialiser Syntax for every widget,
             // allowing for entire widget trees to be created using a nice,
@@ -45,8 +44,8 @@ namespace GtkDemo
                     [Notebook.SwitchPageSignal] = OnPageSwitched,
 
                     // Add some widgets to the notebook
-                    ["Page1"] = new Label("Hello C#"),
-                    ["Page2"] = new Button("Open")
+                    ["Page 0"] = Label.New("Hello C#"),
+                    ["Page 1"] = new Button("Open")
                     {
                         // Register a callback for the button
                         [Button.ClickedSignal] = OnOpenButtonClick,
@@ -56,7 +55,7 @@ namespace GtkDemo
                 // Setup our application to quit when the main
                 // window is closed. We can use delegates as well as
                 // ordinary methods for signal callbacks.
-                [Window.DestroySignal] = (o, e) => Global.MainQuit()
+                [Window.DestroySignal] = (o, e) => Functions.MainQuit()
             };
 
             // Show our window. In Gtk3, widgets are hidden by default.
@@ -67,7 +66,7 @@ namespace GtkDemo
             // Call Gtk.Global.Main() to start our application
             // main loop. The program will keep on running until
             // Gtk.Global.MainQuit() is called.
-            Global.Main();
+            Functions.Main();
 
             // Finally, clean up after ourselves and dispose of the
             // window widget. This is not required, but it is good

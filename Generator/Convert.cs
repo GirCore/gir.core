@@ -67,16 +67,16 @@ namespace Generator
                 (String s, _) when (transfer == Transfer.None) && (transferable is ReturnValue) => $"GLib.Native.StringHelper.ToStringUtf8({fromParam})",
 
                 // Record Conversions (safe handles)
-                (Record r, { IsPointer: true, Array: null }) when useSafeHandle => $"new {r.Write(Target.Managed, currentNamespace)}({fromParam})",
-                (Record r, { IsPointer: true, Array: { } }) when useSafeHandle => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(x)).ToArray()",
+                (Record r, { IsPointer: true, Array: null }) when useSafeHandle => $"{r.Write(Target.Managed, currentNamespace)}.__FactoryNew({fromParam})",
+                (Record r, { IsPointer: true, Array: { } }) when useSafeHandle => $"{fromParam}.Select(x => {r.Write(Target.Managed, currentNamespace)}.__FactoryNew(x)).ToArray()",
 
                 // Record Conversions (raw pointers)
-                (Record r, {IsPointer: true, Array: null }) when !useSafeHandle => $"new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}({fromParam}))",
-                (Record r, {IsPointer: true, Array: { } }) when !useSafeHandle => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}(x))).ToArray()",
+                (Record r, {IsPointer: true, Array: null }) when !useSafeHandle => $"{r.Write(Target.Managed, currentNamespace)}.__FactoryNew(new {SafeHandleFromRecord(r)}({fromParam}))",
+                (Record r, {IsPointer: true, Array: { } }) when !useSafeHandle => $"{fromParam}.Select(x => {r.Write(Target.Managed, currentNamespace)}.__FactoryNew(new {SafeHandleFromRecord(r)}(x))).ToArray()",
 
                 //Record Conversions without pointers are not working yet
-                (Record r, {IsPointer: false, Array: null}) => $"({r.Write(Target.Managed, currentNamespace)}) default!; //TODO: Fixme",
-                (Record r, {IsPointer: false, Array: {}}) => $"({r.Write(Target.Managed, currentNamespace)}[]) default!; //TODO: Fixme",
+                (Record r, {IsPointer: false, Array: null}) => $"({qualifiedType}) default!; //TODO: Fixme",
+                (Record r, {IsPointer: false, Array: {}}) => $"({qualifiedType}[]) {fromParam}.Select(x => {qualifiedType}.__FactoryNew({SafeHandleFromRecord(r, true)}(x))).ToArray();",
                 
                 // Class Conversions
                 (Class { IsFundamental: true } c, { IsPointer: true, Array: null }) => $"{qualifiedType}.From({fromParam})",
@@ -93,9 +93,9 @@ namespace Generator
             };
         }
 
-        private static string SafeHandleFromRecord(Record r)
+        private static string SafeHandleFromRecord(Record r, bool managedHandle = false)
         {
-            var type = r.GetMetadataString("SafeHandleRefName");
+            var type = r.GetMetadataString(managedHandle ? "SafeHandleRefManagedFunc" : "SafeHandleRefName");
             var nspace = $"{r.Repository.Namespace}.Native";
             return nspace + "." + type;
         }

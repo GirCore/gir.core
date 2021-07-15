@@ -1,3 +1,19 @@
+{{~
+# We can assume enums are always 32-bits (clarify?). Therefore
+# determine whether to use a signed or unsigned enum depending
+# on the presence of a negative number.
+
+# By default, assume unsigned
+enum_type = 'uint'
+
+for member in members
+    if member.value < 0
+         # We have a negative number, so use signed type
+         enum_type = 'int'
+    end
+end
+~}}
+
 using System;
 
 namespace {{ namespace.name }}
@@ -5,7 +21,7 @@ namespace {{ namespace.name }}
     {{~ if has_flags ~}}
     [Flags]
     {{~ end ~}}
-    public enum {{ symbol_name }} : long
+    public enum {{ symbol_name }} : {{ enum_type }}
     {
         {{~ for member in members }}
         {{ include 'enum.member.sbntxt' member ~}}

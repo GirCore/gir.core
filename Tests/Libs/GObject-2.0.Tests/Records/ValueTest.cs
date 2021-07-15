@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Runtime.InteropServices;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GObject.Tests
@@ -14,6 +16,20 @@ namespace GObject.Tests
         {
             var v = Value.From(data);
             v.Extract().Should().Be(data);
+        }
+        
+        [TestMethod]
+        public void ValueReturnsExpectedType()
+        {
+            // Check that we have a value
+            var v = Value.From("Hello");
+            Native.Functions.TypeCheckValue(v.Handle).Should().Be(true);
+            
+            // Check we can marshal as a struct
+            Native.Value.Struct str = Marshal.PtrToStructure<Native.Value.Struct>(v.Handle.DangerousGetHandle());
+            Native.Functions.TypeCheckValueHolds(v.Handle, str.GType);
+            Native.Functions.TypeCheckValueHolds(v.Handle, (nuint)Native.BasicType.String);
+            str.GType.Should().Be((nuint) Native.BasicType.String);
         }
     }
 }

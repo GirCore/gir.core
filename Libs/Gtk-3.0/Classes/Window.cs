@@ -12,5 +12,10 @@ namespace Gtk
             : this(ConstructArgument.With("title", title))
         {
         }
+
+        public void SetInteractiveDebugging(bool enable)
+        {
+            Native.Window.Instance.Methods.SetInteractiveDebugging(enable);
+        }
     }
 }

@@ -88,11 +88,10 @@ namespace Generator
             foreach (var argument in parameterList.GetParameters())
             {
                 index += 1;
-                var type = argument.WriteType(Target.Native, currentNamespace);
+                var type = argument.WriteType(Target.Managed, currentNamespace);
                 var name = GirLoader.Helper.String.ToPascalCase(argument.SymbolName);
 
-                builder.AppendLine($"//TODO: public {type} {name} => Args[{index}].Extract<{type}>();");
-                builder.AppendLine($"public string {name} => \"\";");
+                builder.AppendLine($"public {type} {name} => Args[{index}].Extract<{type}>();");
             }
 
             return builder.ToString();

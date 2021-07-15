@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\..\JavascriptCore\Wrapper\JavascriptCore.Wrapper.csproj" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <PackageId>Gir.Wrapper.CS.WebKit2WebExtension</PackageId>
-  </PropertyGroup>
-</Project>

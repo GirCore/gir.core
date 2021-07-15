@@ -42,6 +42,14 @@ namespace Generator
                 //References to records which are using a pointer
                 {TypeReference: { ResolvedType: Record r}, TypeInformation: { IsPointer: true, Array: null}} => GetSafeHandleName(r, currentNamespace, useSafeHandle),
                 {TypeReference: { ResolvedType: Record r}, TypeInformation: { IsPointer: true, Array: { }}} => "IntPtr[]", //Array of SafeHandle not supported by runtime
+                
+                //References to records which are not using a pointer
+                {TypeReference: { ResolvedType: Union u}, TypeInformation: { IsPointer: false, Array: null}} => GetStructName(u, currentNamespace),
+                {TypeReference: { ResolvedType: Union u}, TypeInformation: { IsPointer: false, Array: { }}} => GetStructName(u, currentNamespace) + "[]",
+                
+                //References to records which are using a pointer
+                {TypeReference: { ResolvedType: Union u}, TypeInformation: { IsPointer: true, Array: null}} => "IntPtr",
+                {TypeReference: { ResolvedType: Union u}, TypeInformation: { IsPointer: true, Array: { }}} => "IntPtr[]",
 
                 // Primitives - Marshal directly
                 { TypeInformation: { Array: { } }, TypeReference: { ResolvedType: PrimitiveValueType s } } => s.Write(Target.Native, currentNamespace) + "[]",
@@ -63,6 +71,11 @@ namespace Generator
         private static string GetStructName(Record r, Namespace currentNamespace)
         {
             return AddNamespace(currentNamespace, r.Repository.Namespace, r.GetMetadataString("StructRefName"), Target.Native);
+        }
+        
+        private static string GetStructName(Union u, Namespace currentNamespace)
+        {
+            return AddNamespace(currentNamespace, u.Repository.Namespace, u.GetMetadataString("StructRefName"), Target.Native);
         }
         
         private static string GetSafeHandleName(Record r, Namespace currentNamespace, bool useSafeHandle)

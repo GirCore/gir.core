@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\..\Gtk3\Wrapper\Gtk3.Wrapper.csproj" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <PackageId>Gir.Wrapper.CS.Handy</PackageId>
-  </PropertyGroup>
-</Project>

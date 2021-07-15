@@ -141,7 +141,7 @@ namespace GObject
             closureRegistry.Connect<Action<string>>(
                 action: o.OnPropertyChanged,
                 after: false,
-                mapping: arg => ((ref Native.Value.Struct[] _) => arg(PropertyName))
+                mapping: arg => ((ref Value[] _) => arg(PropertyName))
             );
         }
 

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<interface>
-  <object class="GtkComboBoxText" id="combobox">
-    <items>
-      <item translatable="yes" id="t1">Test 1</item>
-      <item translatable="yes" id="t2">Test 2</item>
-    </items>
-  </object>
-</interface>

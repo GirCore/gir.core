@@ -5,10 +5,11 @@ namespace GObject
 {
     public partial class Object
     {
-        protected internal delegate void ActionRefValues(ref Native.Value.Struct[] items);
+        protected internal delegate void ActionRefValues(ref Value[] items);
 
         private class ClosureHelper : IDisposable
         {
+            private readonly ClosureMarshal? _marshalCallback;
             private readonly ActionRefValues _callback;
             private readonly Closure _closure;
 
@@ -16,30 +17,19 @@ namespace GObject
 
             public ClosureHelper(ActionRefValues action)
             {
-                //TODO Use MarshalCallback
-                _closure = new Closure(Workaround);
+                _marshalCallback = MarshalCallback;
+                _closure = new Closure(_marshalCallback);
                 _callback = action;
             }
 
-
-            //TODO: Delete this method
-            private void Workaround()
-            {
-                var data = Array.Empty<Native.Value.Struct>();
-                _callback(ref data);
-            }
-
-            public void MarshalCallback(Closure closure, Value? returnValue, uint nParamValues, Value[] paramValues, IntPtr? invocationHint, IntPtr? marshalData)
+            private void MarshalCallback(Closure closure, Value? returnValue, uint nParamValues, Value[] paramValues, IntPtr? invocationHint, IntPtr? marshalData)
             {
                 Debug.Assert(
                     condition: paramValues.Length == nParamValues,
                     message: "Values were not marshalled correctly. Breakage may occur"
                 );
 
-                //TODO forward values
-
-                var data = Array.Empty<Native.Value.Struct>();
-                _callback(ref data);
+                _callback(ref paramValues);
             }
 
             public void Dispose()

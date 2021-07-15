@@ -127,12 +127,12 @@ namespace GObject
             closureRegistry.Connect(
                 action: action,
                 after: after,
-                mapping: callback => ((ref Native.Value.Struct[] items) =>
+                mapping: callback => (ref Value[] items) =>
                 {
                     var args = new TSignalArgs();
-                    //TODO: args.SetArgs(items);
+                    args.SetArgs(items);
                     callback(o, args);
-                })
+                }
             );
         }
 
@@ -183,7 +183,7 @@ namespace GObject
             closureRegistry.Connect(
                 action: action,
                 after: after,
-                mapping: callback => (ref Native.Value.Struct[] _) => callback(o, EventArgs.Empty)
+                mapping: callback => (ref Value[] _) => callback(o, EventArgs.Empty)
             );
         }
 
