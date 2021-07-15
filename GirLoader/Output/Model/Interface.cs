@@ -17,7 +17,7 @@ namespace GirLoader.Output.Model
         public IEnumerable<Method> Functions => _functions;
         public IEnumerable<Property> Properties => _properties;
 
-        public Interface(Repository repository, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties) : base(repository, cTypeName, typeName, symbolName)
+        public Interface(Repository repository, CType? cType, SymbolName originalName, SymbolName symbolName, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties) : base(repository, cType, originalName, symbolName)
         {
             Implements = implements;
             this._methods = methods.ToList();
@@ -38,8 +38,8 @@ namespace GirLoader.Output.Model
 
         internal override void Strip()
         {
-            _methods.RemoveAll(Remove);
-            _functions.RemoveAll(Remove);
+            _methods.RemoveAll(SymbolIsNotResolved);
+            _functions.RemoveAll(SymbolIsNotResolved);
         }
 
         public override bool GetIsResolved()
@@ -54,14 +54,25 @@ namespace GirLoader.Output.Model
                    && Functions.AllResolved();
         }
 
-        private bool Remove(Element element)
+        private bool SymbolIsNotResolved(Symbol symbol)
         {
-            var result = element.GetIsResolved();
+            var result = symbol.GetIsResolved();
 
             if (!result)
-                Log.Information($"Interface {Repository?.Namespace.Name}.{TypeName}: Stripping symbol {element.Name}");
+                Log.Information($"Interface {Repository?.Namespace.Name}.{OriginalName}: Stripping symbol {symbol.OriginalName}");
 
             return !result;
+        }
+        
+        internal override bool Matches(TypeReference typeReference)
+        {
+            if (typeReference.CTypeReference is not null && typeReference.CTypeReference.CType != "gpointer")
+                return typeReference.CTypeReference.CType == CType;
+
+            if (typeReference.SymbolNameReference is not null)
+                return typeReference.SymbolNameReference.SymbolName == OriginalName;
+
+            return false;
         }
     }
 }
