@@ -36,12 +36,12 @@ namespace Generator
                 { TypeInformation: { Array: { } }, TypeReference: { ResolvedType: { } s } } when s.SymbolName == "byte" => "byte[]",
 
                 //References to records which are not using a pointer
-                {TypeReference: { ResolvedType: Record r}, TypeInformation: { IsPointer: false, Array: null}} => GetStructName(r, currentNamespace),
-                {TypeReference: { ResolvedType: Record r}, TypeInformation: { IsPointer: false, Array: { }}} => GetStructName(r, currentNamespace) + "[]",
-                
+                { TypeReference: { ResolvedType: Record r }, TypeInformation: { IsPointer: false, Array: null } } => GetStructName(r, currentNamespace),
+                { TypeReference: { ResolvedType: Record r }, TypeInformation: { IsPointer: false, Array: { } } } => GetStructName(r, currentNamespace) + "[]",
+
                 //References to records which are using a pointer
-                {TypeReference: { ResolvedType: Record r}, TypeInformation: { IsPointer: true, Array: null}} => GetSafeHandleName(r, currentNamespace, useSafeHandle),
-                {TypeReference: { ResolvedType: Record r}, TypeInformation: { IsPointer: true, Array: { }}} => "IntPtr[]", //Array of SafeHandle not supported by runtime
+                { TypeReference: { ResolvedType: Record r }, TypeInformation: { IsPointer: true, Array: null } } => GetSafeHandleName(r, currentNamespace, useSafeHandle),
+                { TypeReference: { ResolvedType: Record r }, TypeInformation: { IsPointer: true, Array: { } } } => "IntPtr[]", //Array of SafeHandle not supported by runtime
 
                 // Primitives - Marshal directly
                 { TypeInformation: { Array: { } }, TypeReference: { ResolvedType: PrimitiveValueType s } } => s.Write(Target.Native, currentNamespace) + "[]",
@@ -64,12 +64,12 @@ namespace Generator
         {
             return AddNamespace(currentNamespace, r.Repository.Namespace, r.GetMetadataString("StructRefName"), Target.Native);
         }
-        
+
         private static string GetSafeHandleName(Record r, Namespace currentNamespace, bool useSafeHandle)
         {
             if (useSafeHandle)
                 return AddNamespace(currentNamespace, r.Repository.Namespace, r.GetMetadataString("SafeHandleRefName"), Target.Native);
-            
+
             return "IntPtr";
         }
 
